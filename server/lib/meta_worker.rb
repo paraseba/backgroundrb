@@ -316,12 +316,11 @@ module BackgrounDRb
 
     def invoke_user_method user_method,args
       if self.respond_to?(user_method)
-        called_method_arity = self.method(user_method).arity
         t_result = nil
         begin
-          if(called_method_arity != 0)
-            t_result = self.send(user_method,args)
-          else
+          begin
+            t_result = self.send(user_method, args)
+          rescue ArgumentError => e
             t_result = self.send(user_method)
           end
           [t_result,"ok"]
